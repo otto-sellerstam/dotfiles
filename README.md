@@ -1,5 +1,6 @@
 # Different dotfiles for configs
 
 Currently includes:
-- nvim
+- nvim configs
+- bash configs
 
