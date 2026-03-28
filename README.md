@@ -5,7 +5,7 @@ Personal configs managed with [GNU Stow](https://www.gnu.org/software/stow/).
 ## Quick start (fresh machine)
 
 ```bash
-git clone <this-repo> ~/dotfiles
+git clone https://github.com/otto-sellerstam/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./bootstrap.sh
 ```
