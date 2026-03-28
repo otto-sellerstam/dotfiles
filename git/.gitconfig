@@ -1,0 +1,40 @@
+[user]
+	name = Otto Sellerstam
+	email = ottosellerstam@gmail.com
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = nvim
+	autocrlf = input       # convert CRLF to LF on commit (important for WSL)
+	pager = less -FRX
+
+[pull]
+	rebase = true          # rebase instead of merge on pull
+
+[push]
+	default = current      # push current branch to same name on remote
+	autoSetupRemote = true # auto-track remote branch on first push
+
+[merge]
+	conflictstyle = diff3  # show base, ours, theirs in conflicts
+
+[diff]
+	algorithm = histogram  # better diff output
+
+[rerere]
+	enabled = true         # remember conflict resolutions
+
+[alias]
+	s = status -sb
+	l = log --oneline --graph -20
+	la = log --oneline --graph --all -30
+	d = diff
+	ds = diff --staged
+	co = checkout
+	br = branch
+	unstage = reset HEAD --
+	last = log -1 HEAD --stat
+	amend = commit --amend --no-edit
+

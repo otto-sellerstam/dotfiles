@@ -1,6 +1,10 @@
 # Different dotfiles for configs
 
 Currently includes:
-- nvim configs
-- bash configs
+- nvim
+- bash
+- nushell
+- starship
+- git
 
+Each config has its own `README.md`.

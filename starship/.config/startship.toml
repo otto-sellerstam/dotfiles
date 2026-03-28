@@ -1,0 +1,66 @@
+# ==========================================================================
+# starship.toml — cross-shell prompt
+# Works in nushell, bash, zsh, fish — same prompt everywhere.
+# Install: curl -sS https://starship.rs/install.sh | sh
+# ==========================================================================
+
+# Don't add a blank line between prompts
+add_newline = false
+
+# Timeout for commands that take too long (ms)
+command_timeout = 500
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$rust\
+$nodejs\
+$character"""
+
+[character]
+success_symbol = "[›](bold green)"
+error_symbol = "[›](bold red)"
+vimcmd_symbol = "[‹](bold purple)"    # shows in vi normal mode
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+style = "bold cyan"
+
+[git_branch]
+format = " [$branch]($style)"
+style = "bold purple"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "bold red"
+
+[python]
+format = " [py $version( \\($virtualenv\\))]($style)"
+style = "yellow"
+detect_extensions = ["py"]
+detect_files = ["pyproject.toml", "requirements.txt"]
+
+[rust]
+format = " [rs $version]($style)"
+style = "bold 208"
+
+[nodejs]
+format = " [node $version]($style)"
+style = "bold green"
+detect_files = ["package.json", "tsconfig.json"]
+
+# Hide things that add noise
+[package]
+disabled = true
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[docker_context]
+disabled = true
