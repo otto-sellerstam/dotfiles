@@ -12,9 +12,6 @@ use std/util "path add"
 path add "~/.local/bin"
 path add ($env.HOME | path join ".cargo/bin")
 
-# uv / Python
-path add ($env.HOME | path join ".local/bin")  # uv installs here
-
 # Mason (neovim LSP tools)
 path add ($env.HOME | path join ".local/share/nvim/mason/bin")
 

@@ -11,8 +11,4 @@ Bash config kept as a fallback. Some system scripts, CI, and tools assume bash. 
 
 ## Customizing
 
-Edit `~/.bashrc`. If you add Starship, include this at the end:
-
-```bash
-eval "$(starship init bash)"
-```
+Edit `~/.bashrc`. Starship prompt and Mason PATH are already configured.

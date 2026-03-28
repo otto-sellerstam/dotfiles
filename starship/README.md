@@ -34,4 +34,4 @@ Cloud provider indicators (AWS, GCP), Docker context, and package version are di
 
 ## Customizing
 
-Edit `~/.config/starship.toml`. Changes apply on next prompt render (no restart needed). Full docs at https://starship.rs/config/
+Edit `~/.config/starship/starship.toml`. Changes apply on next prompt render (no restart needed). Full docs at https://starship.rs/config/
