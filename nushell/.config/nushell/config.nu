@@ -20,8 +20,6 @@ $env.config.history.file_format = "sqlite"
 $env.config.history.max_size = 100_000
 $env.config.history.isolation = false       # share history across sessions
 
-$env.config.filesize.metric = true          # KB/MB/GB instead of KiB/MiB/GiB
-
 # --------------------------------------------------------------------------
 # Aliases
 # --------------------------------------------------------------------------
