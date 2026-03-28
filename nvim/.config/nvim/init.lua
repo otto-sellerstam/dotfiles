@@ -5,14 +5,14 @@
 -- Structure:
 --   ~/.config/nvim/
 --     init.lua          ← this file
---     lsp/
+--     after/lsp/
 --       pyrefly.lua     ← Python type checker (via uv run)
 --       ruff.lua        ← Python linter/formatter (via uv run)
 --       lua_ls.lua      ← Lua (for editing this config)
 --       rust_analyzer.lua ← Rust
 --       eslint.lua      ← JS/TS linting
 --
--- LSP configs are in lsp/*.lua as tables. Neovim 0.11 auto-discovers them.
+-- LSP configs are in after/lsp/*.lua as tables. Neovim 0.11 auto-discovers them.
 -- Python tools use `uv run` so they resolve each project's .venv automatically.
 -- ==========================================================================
 
@@ -122,7 +122,7 @@ vim.lsp.enable({
 -- --------------------------------------------------------------------------
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     'git', 'clone', '--filter=blob:none',
     'https://github.com/folke/lazy.nvim.git',

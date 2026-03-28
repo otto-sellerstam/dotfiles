@@ -8,6 +8,12 @@ case $- in
       *) return;;
 esac
 
+# Launch nushell as default interactive shell (if installed)
+if command -v nu &>/dev/null && [ -z "$NU_LAUNCHED" ]; then
+  export NU_LAUNCHED=1
+  exec nu
+fi
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -137,6 +143,9 @@ fi
 
 # Mason (neovim LSP tools)
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
+
+# Zoxide (smart cd)
+eval "$(zoxide init bash)"
 
 # Starship prompt
 eval "$(starship init bash)"

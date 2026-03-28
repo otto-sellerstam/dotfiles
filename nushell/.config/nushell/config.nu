@@ -44,6 +44,8 @@ alias la = ls -la
 # Quick access
 alias nv = nvim
 alias dots = cd ~/dotfiles
+alias lg = lazygit
+alias cat = bat
 
 # Python / uv
 alias uvr = uv run
@@ -70,13 +72,28 @@ def ff [pattern: string] {
 }
 
 # --------------------------------------------------------------------------
+# Zoxide (smart cd)
+# --------------------------------------------------------------------------
+
+if (which zoxide | is-not-empty) {
+  let zoxide_nu = ($nu.default-config-dir | path join "vendor/autoload/zoxide.nu")
+  if not ($zoxide_nu | path exists) {
+    mkdir ($nu.default-config-dir | path join "vendor/autoload")
+    zoxide init nushell | save -f $zoxide_nu
+  }
+}
+
+# --------------------------------------------------------------------------
 # Starship prompt (if installed)
 # --------------------------------------------------------------------------
 # Starship provides a fast, customizable prompt that works across shells.
 # Install: curl -sS https://starship.rs/install.sh | sh
 
 if (which starship | is-not-empty) {
-  mkdir ($nu.default-config-dir | path join "vendor/autoload")
-  starship init nu | save -f ($nu.default-config-dir | path join "vendor/autoload/starship.nu")
+  let starship_nu = ($nu.default-config-dir | path join "vendor/autoload/starship.nu")
+  if not ($starship_nu | path exists) {
+    mkdir ($nu.default-config-dir | path join "vendor/autoload")
+    starship init nu | save -f $starship_nu
+  }
 }
 

@@ -1,6 +1,6 @@
 # Git Config
 
-Sensible defaults for daily git usage.
+Sensible defaults for daily git usage, with delta for syntax-highlighted diffs.
 
 ## What's configured
 
@@ -9,15 +9,24 @@ Sensible defaults for daily git usage.
 - **Histogram diffs** — better diff algorithm than the default
 - **diff3 conflicts** — shows base + ours + theirs in merge conflicts
 - **rerere** — remembers how you resolved conflicts, auto-applies next time
+- **delta pager** — syntax-highlighted, side-by-side diffs with line numbers
 - **nvim as editor** — for commits, rebases, etc.
+- **GitHub CLI credentials** — `gh auth git-credential` for HTTPS auth
 
 ## Setup
 
-Fill in your email in `.gitconfig`:
+Fill in your name and email in `.gitconfig`:
 
 ```
 [user]
+    name = Your Name
     email = your@email.com
+```
+
+Then authenticate with GitHub:
+
+```bash
+gh auth login
 ```
 
 ## Cheat sheet
@@ -31,6 +40,7 @@ git add -p                     # stage interactively (hunk by hunk)
 git commit -m "message"        # commit
 git push                       # push (auto-tracks on first push)
 git pull                       # pull with rebase
+lazygit                        # TUI git client (alias: lg)
 ```
 
 ### Branching
@@ -58,7 +68,7 @@ git stash pop                  # restore shelved changes
 
 ```
 git log --oneline --graph -20        # recent history
-git diff                             # unstaged changes
+git diff                             # unstaged changes (side-by-side via delta)
 git diff --staged                    # staged changes
 git log --oneline --author="Otto"    # your commits
 git blame file.py                    # who changed each line

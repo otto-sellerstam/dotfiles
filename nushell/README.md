@@ -1,26 +1,14 @@
 # Nushell Config
 
-A structured-data shell with vi keybindings, fuzzy completion, and Starship prompt integration.
+Primary interactive shell with vi keybindings, fuzzy completion, zoxide, and Starship prompt.
 
-## First-time setup
-
-```bash
-# Install
-sudo apt install nushell    # WSL/Ubuntu
-sudo pacman -S nushell      # Arch
-
-# Try it without committing
-nu
-
-# Set as default (optional, only after you're comfortable)
-chsh -s $(which nu)
-```
+Bash auto-launches nushell on interactive startup, so nushell is the default shell without needing `chsh`.
 
 ## Files
 
 ```
-config.nu    Shell behavior, aliases, custom commands
-env.nu       Environment variables, PATH
+config.nu    Shell behavior, aliases, custom commands, zoxide + starship init
+env.nu       Environment variables, PATH (cargo, Mason, NVM, pnpm)
 ```
 
 ## What's configured
@@ -28,10 +16,13 @@ env.nu       Environment variables, PATH
 - **Vi edit mode** — hjkl movement, ESC for normal mode, same muscle memory as nvim
 - **Fuzzy completion** — type partial matches, Tab opens the menu
 - **SQLite history** — shared across sessions, searchable
-- **Starship prompt** — auto-initialized if starship is installed
-- **Git aliases** — g, gs, ga, gc, gp, gl, gd, gco
+- **Starship prompt** — auto-initialized on first launch
+- **Zoxide** — `z` for smart directory jumping, auto-initialized on first launch
+- **Git aliases** — g, gs, ga, gc, gp, gl, gd, gco, gsw
 - **Python/uv aliases** — uvr (uv run), uvs (uv sync)
+- **Tool aliases** — lg (lazygit), cat (bat), nv (nvim), dots (cd ~/dotfiles)
 - **Custom commands** — mkcd, big, ff
+- **PATH** — cargo, Mason, NVM (default node version), pnpm
 
 ## Cheat sheet
 
@@ -62,15 +53,15 @@ mut y = 10                # mutable
 ```
 cd ~/projects             # same as bash
 cd -                      # previous directory
-z <partial>               # zoxide jump (if installed)
+z <partial>               # zoxide jump (learns your frequent dirs)
 ```
 
 ### History
 
 ```
-↑ / ↓                     # scroll through history
+Up / Down                 # scroll through history
 Ctrl+r                    # search history
-→                         # accept ghost suggestion (grey text)
+Right arrow               # accept ghost suggestion (grey text)
 Tab                       # open completion menu
 ```
 
@@ -107,10 +98,11 @@ ff "test"                 # find files matching *test*
 ```
 g, gs, ga, gc, gp         # git shortcuts
 gl                         # git log --oneline --graph
-gd                         # git diff
-gco                        # git checkout
+gd, gco, gsw, gswc, gswm  # git diff, checkout, switch
 ll / la                    # ls -l / ls -la
 nv                         # nvim
+lg                         # lazygit
+cat                        # bat (syntax-highlighted cat)
 dots                       # cd ~/dotfiles
 uvr / uvs                  # uv run / uv sync
 ```
