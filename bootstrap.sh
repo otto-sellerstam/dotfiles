@@ -132,8 +132,9 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
   ok "NVM already installed."
 else
   info "Installing NVM..."
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | PROFILE=/dev/null bash
-  ok "NVM installed."
+  NVM_LATEST=$(curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | jq -r '.tag_name')
+  curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_LATEST}/install.sh" | PROFILE=/dev/null bash
+  ok "NVM ${NVM_LATEST} installed."
 fi
 
 # shellcheck disable=SC1091

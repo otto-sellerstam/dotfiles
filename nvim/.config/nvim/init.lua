@@ -270,9 +270,20 @@ require('lazy').setup({
   },
 
   -- Mason: installs LSP server binaries
-  -- After first launch, run :Mason and install:
-  --   lua-language-server, rust-analyzer, eslint-lsp, prettier, stylua
   { 'mason-org/mason.nvim', opts = {} },
+  {
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    dependencies = { 'mason-org/mason.nvim' },
+    opts = {
+      ensure_installed = {
+        'lua-language-server',
+        'rust-analyzer',
+        'eslint-lsp',
+        'prettier',
+        'stylua',
+      },
+    },
+  },
 
   -- TypeScript (own plugin, bypasses the lsp/ directory)
   {
