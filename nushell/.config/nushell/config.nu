@@ -72,6 +72,34 @@ def ff [pattern: string] {
 }
 
 # --------------------------------------------------------------------------
+# nvm wrapper (nvm is a bash function, not a binary)
+# --------------------------------------------------------------------------
+
+def --env nvm [...args: string] {
+  let command = ($args | str join " ")
+  # Run nvm in bash and capture the resulting PATH + NVM environment
+  let result = (bash -c $"source ~/.nvm/nvm.sh && nvm ($command) && echo __NVM_ENV__ && echo $PATH && echo $NVM_DIR && echo $NVM_BIN" | str trim)
+
+  if ($result | str contains "__NVM_ENV__") {
+    let parts = ($result | split row "__NVM_ENV__" | last | lines | where { $in != "" })
+    if ($parts | length) >= 1 {
+      $env.PATH = ($parts.0 | split row ":")
+    }
+    if ($parts | length) >= 2 {
+      $env.NVM_DIR = $parts.1
+    }
+    if ($parts | length) >= 3 {
+      $env.NVM_BIN = $parts.2
+    }
+    # Show the nvm output (before the env marker)
+    $result | split row "__NVM_ENV__" | first | str trim
+  } else {
+    # No env marker means nvm printed output without changing state (e.g. nvm list)
+    $result
+  }
+}
+
+# --------------------------------------------------------------------------
 # Zoxide (smart cd)
 # --------------------------------------------------------------------------
 
