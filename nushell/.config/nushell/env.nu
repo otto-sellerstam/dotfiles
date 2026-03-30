@@ -7,6 +7,9 @@
 $env.EDITOR = 'nvim'
 $env.VISUAL = 'nvim'
 
+# Node.js
+$env.NODE_OPTIONS = '--max-old-space-size=12288'
+
 # PATH additions
 use std/util "path add"
 path add "~/.local/bin"
