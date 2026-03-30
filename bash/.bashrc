@@ -11,7 +11,7 @@ esac
 # Launch nushell as default interactive shell (if installed)
 if command -v nu &>/dev/null && [ -z "$NU_LAUNCHED" ]; then
   export NU_LAUNCHED=1
-  exec nu
+  exec nu -l
 fi
 
 # don't put duplicate lines or lines starting with space in the history.
