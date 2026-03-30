@@ -36,6 +36,7 @@ alias gco = git checkout
 alias gsw = git switch
 alias gswc = git switch -c
 alias gswm = git switch main
+alias gb = git branch
 
 # Navigation
 alias ll = ls -l
@@ -109,6 +110,7 @@ if (which zoxide | is-not-empty) {
     mkdir ($nu.default-config-dir | path join "vendor/autoload")
     zoxide init nushell | save -f $zoxide_nu
   }
+  source ($nu.default-config-dir | path join "vendor/autoload/zoxide.nu")
 }
 
 # --------------------------------------------------------------------------
@@ -123,5 +125,16 @@ if (which starship | is-not-empty) {
     mkdir ($nu.default-config-dir | path join "vendor/autoload")
     starship init nu | save -f $starship_nu
   }
+  source ($nu.default-config-dir | path join "vendor/autoload/starship.nu")
+}
+
+# --------------------------------------------------------------------------
+# Direnv (auto-load .envrc per directory)
+# --------------------------------------------------------------------------
+
+if (which direnv | is-not-empty) {
+  let hook = {|| direnv export json | from json | default {} | load-env }
+  $env.config.hooks.env_change.PWD = ($env.config.hooks.env_change.PWD? | default [] | append $hook)
+  do $hook  # also trigger on startup, not just on cd
 }
 
