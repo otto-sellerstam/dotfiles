@@ -3,12 +3,12 @@
 # Only overrides are listed; all other defaults remain intact.
 # ==========================================================================
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "H"
 run  = "tab_switch -1 --relative"
 desc = "Switch to previous tab"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "L"
 run  = "tab_switch 1 --relative"
 desc = "Switch to next tab"
