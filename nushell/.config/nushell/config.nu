@@ -21,6 +21,13 @@ $env.config.history.max_size = 100_000
 $env.config.history.isolation = false       # share history across sessions
 
 # --------------------------------------------------------------------------
+# Git completions (branch names, tags, remotes, etc.)
+# Must be sourced before git aliases so they inherit completions.
+# --------------------------------------------------------------------------
+
+source ($nu.default-config-dir | path join "vendor/autoload/git-completions.nu")
+
+# --------------------------------------------------------------------------
 # Aliases
 # --------------------------------------------------------------------------
 
