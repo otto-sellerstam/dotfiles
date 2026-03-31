@@ -8,7 +8,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-packages=(bash git nushell nvim starship)
+packages=(bash git nushell nvim starship yazi)
 
 for pkg in "${packages[@]}"; do
   echo "Stowing $pkg..."

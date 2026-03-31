@@ -47,6 +47,7 @@ alias nv = nvim
 alias dots = cd ~/dotfiles
 alias lg = lazygit
 alias cat = bat
+alias y = yazi
 
 # Python / uv
 alias uvr = uv run

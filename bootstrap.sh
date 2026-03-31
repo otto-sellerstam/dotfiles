@@ -29,7 +29,7 @@ APT_PACKAGES=(git stow curl build-essential direnv unzip
               fzf ripgrep fd-find bat jq)
 PACMAN_PACKAGES=(git stow curl base-devel direnv unzip
                  fzf ripgrep fd bat jq
-                 neovim nushell starship lazygit git-delta zoxide just)
+                 neovim nushell starship lazygit git-delta zoxide just yazi)
 
 if has pacman; then
   info "Installing system packages via pacman..."
@@ -230,6 +230,19 @@ elif has cargo; then
   ok "just installed."
 else
   warn "Could not install just — install it manually."
+fi
+
+# --- yazi (terminal file manager) ---
+if has yazi; then
+  ok "yazi already installed."
+elif has pacman; then
+  : # installed via pacman above
+elif has cargo; then
+  info "Installing yazi via cargo..."
+  cargo install --locked yazi-fm yazi-cli
+  ok "yazi installed."
+else
+  warn "Could not install yazi — install it manually."
 fi
 
 # ==========================================================================
