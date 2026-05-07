@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true,
+  "autoMemoryEnabled": false,
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/rename-on-tackle-linear-issue.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -46,6 +46,16 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
+-- Auto-cd to git repo root so Telescope, LSP, etc. always work from the project root
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    local root = vim.fn.system('git rev-parse --show-toplevel 2>/dev/null'):gsub('\n', '')
+    if vim.v.shell_error == 0 and root ~= '' then
+      vim.cmd.cd(root)
+    end
+  end,
+})
+
 -- --------------------------------------------------------------------------
 -- 2. KEYMAPS
 -- --------------------------------------------------------------------------
@@ -55,6 +65,9 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left split' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right split' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower split' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper split' })
+vim.keymap.set('n', 'H', '<cmd>tabprevious<CR>', { desc = 'Previous tab' })
+vim.keymap.set('n', 'L', '<cmd>tabnext<CR>', { desc = 'Next tab' })
+vim.keymap.set('n', '<leader>x', '<cmd>tabclose<CR>', { desc = 'Close tab' })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic' })
@@ -65,7 +78,8 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Diagnostic
 -- --------------------------------------------------------------------------
 
 vim.diagnostic.config({
-  virtual_text = true,
+  virtual_text = false,
+  virtual_lines = true,
   signs = true,
   underline = true,
   update_in_insert = true,
@@ -98,6 +112,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
+    map('<F12>', function() vim.cmd('tab split') vim.lsp.buf.definition() end, 'Definition in new tab')
     map('<leader>rn', vim.lsp.buf.rename, 'Rename')
     map('<leader>ca', vim.lsp.buf.code_action, 'Code Action')
   end,
@@ -164,6 +179,20 @@ require('lazy').setup({
     end,
   },
 
+  -- Tabline
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {
+      options = {
+        mode = 'tabs',
+        show_close_icon = false,
+        show_buffer_close_icons = false,
+      },
+    },
+  },
+
   -- Statusline
   {
     'nvim-lualine/lualine.nvim',
@@ -220,13 +249,28 @@ require('lazy').setup({
     end,
   },
 
-  -- Oil: file explorer as a buffer
+  -- Yazi: file explorer in a floating terminal
   {
-    'stevearc/oil.nvim',
-    config = function()
-      require('oil').setup({ view_options = { show_hidden = true } })
-      vim.keymap.set('n', '-', '<cmd>Oil<CR>', { desc = 'Open parent directory' })
-    end,
+    'mikavilpas/yazi.nvim',
+    version = '*',
+    event = 'VeryLazy',
+    keys = {
+      { '-', '<cmd>Yazi<cr>', desc = 'Open yazi at current file' },
+      { '<leader>-', '<cmd>Yazi cwd<cr>', desc = 'Open yazi in working directory' },
+    },
+    opts = {
+      open_for_directories = true,
+      hooks = {
+        yazi_opened_multiple_files = function(chosen_files)
+          for _, file in ipairs(chosen_files) do
+            vim.cmd('tabedit ' .. vim.fn.fnameescape(file))
+          end
+        end,
+      },
+      open_file_function = function(chosen_file)
+        vim.cmd('tabedit ' .. vim.fn.fnameescape(chosen_file))
+      end,
+    },
   },
 
   -- Harpoon: bookmark files
@@ -244,6 +288,14 @@ require('lazy').setup({
         vim.keymap.set('n', '<leader>' .. i, function() harpoon:list():select(i) end, { desc = 'Harpoon ' .. i })
       end
     end,
+  },
+
+  -- Render markdown inline
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    ft = 'markdown',
+    opts = {},
   },
 
   -- Editing
@@ -288,16 +340,35 @@ require('lazy').setup({
   -- TypeScript (own plugin, bypasses the lsp/ directory)
   {
     'pmizio/typescript-tools.nvim',
+    ft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {
-      settings = {
-        separate_diagnostic_server = true,
-        tsserver_file_preferences = {
-          includeInlayParameterNameHints = 'all',
-          includeCompletionsForModuleExports = true,
+    config = function()
+      -- Walk up from the current file to find node_modules/typescript/lib/tsserver.js
+      local function find_tsserver()
+        local bufname = vim.api.nvim_buf_get_name(0)
+        for dir in vim.fs.parents(bufname) do
+          local candidate = dir .. '/node_modules/typescript/lib/tsserver.js'
+          if vim.uv.fs_stat(candidate) then
+            return candidate
+          end
+        end
+      end
+
+      require('typescript-tools').setup({
+        root_dir = function(bufnr, on_dir)
+          local dir = vim.fs.root(bufnr, '.git') or vim.fs.root(bufnr, { 'package.json', 'tsconfig.json' })
+          if dir then on_dir(dir) end
+        end,
+        settings = {
+          tsserver_path = find_tsserver(),
+          separate_diagnostic_server = true,
+          tsserver_file_preferences = {
+            includeInlayParameterNameHints = 'all',
+            includeCompletionsForModuleExports = true,
+          },
         },
-      },
-    },
+      })
+    end,
   },
 
   -- Autocompletion

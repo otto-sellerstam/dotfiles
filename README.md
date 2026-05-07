@@ -35,6 +35,7 @@ If tools are already installed and you just want to symlink configs:
 ## Configs
 
 - [bash](bash/README.md) — fallback shell, auto-launches nushell
+- [claude](claude/README.md) — Claude Code settings + UserPromptSubmit hook that renames sessions on `/tackle-linear-issue`
 - [git](git/README.md) — rebase-on-pull, delta pager, rerere
 - [nushell](nushell/README.md) — primary shell with vi mode, fuzzy completions, zoxide
 - [nvim](nvim/README.md) — Neovim 0.11+ with LSP, Telescope, and format-on-save

@@ -1,9 +1,2 @@
--- eslint: JavaScript/TypeScript linting
-return {
-  cmd = { 'vscode-eslint-language-server', '--stdio' },
-  filetypes = {
-    'javascript', 'javascriptreact',
-    'typescript', 'typescriptreact',
-  },
-  root_markers = { '.eslintrc', '.eslintrc.js', '.eslintrc.json', 'eslint.config.js', 'eslint.config.mjs', '.git' },
-}
+-- eslint: use built-in lspconfig (it checks for eslint config files before starting)
+return {}
